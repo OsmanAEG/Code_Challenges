@@ -1,5 +1,6 @@
 #include <string>
 #include <iostream>
+#include <unordered_map>
 
 auto duplicate_encoder(const std::string& word){
   auto lower_case = [](const std::string& word){
@@ -10,22 +11,29 @@ auto duplicate_encoder(const std::string& word){
     return lower_word;
   };
 
-  std::string result = "";
-  auto lower_word = lower_case(word);
-  for(auto& character : lower_word){
-    int num_recurrences = 0;
-
-    for(auto& character_check : lower_word){
-      if(character == character_check){
-        num_recurrences++;
+  auto is_letter_recurring = [](const std::string& word){
+    std::unordered_map<char, bool> letter_count;
+    for(auto& character : word){
+      if(letter_count.find(character) == letter_count.end()){
+        letter_count[character] = true;
+      }
+      else{
+        letter_count[character] = false;
       }
     }
 
-    if(num_recurrences > 1){
-      result += ')';
+    return letter_count;
+  };
+
+  std::string result = "";
+  auto lower_word = lower_case(word);
+  auto recurring_letters = is_letter_recurring(lower_word);
+  for(auto& character : lower_word){
+    if(recurring_letters[character]){
+      result += "(";
     }
     else{
-      result += '(';
+      result += ")";
     }
   }
 
