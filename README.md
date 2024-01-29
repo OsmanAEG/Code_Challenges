@@ -1,2 +1,2 @@
-# Code_Wars
-My solutions to problems from Code Wars!
+# Code Challenges
+My solutions to online code challenges
