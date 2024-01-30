@@ -1,42 +1,46 @@
 #include <iostream>
 #include <vector>
-#include <map>
 #include <algorithm>
-#include <iterator>
 
 class Solution {
 public:
   int carFleet(int target, std::vector<int>& position, std::vector<int>& speed){
     const auto N = position.size();
-    std::map<int, int> old_fleets;
+    int num_fleets = 1;
 
-    int fleet_count = 0;
+    std::vector<std::vector<double>> cars;
 
-    for(int i = 0; i < N; ++i){old_fleets[position[i]] = speed[i];}
-
-    while(!old_fleets.empty()){
-      std::map<int, int> new_fleets;
-
-      for(auto i = old_fleets.begin(); i != old_fleets.end(); ++i){
-        const auto new_pos = i->first + i->second;
-        new_fleets[new_pos] = i->second;
-      }
-
-      std::cout << std::distance(new_fleets.upper_bound(target), new_fleets.end()) << std::endl;
-      fleet_count += std::distance(new_fleets.upper_bound(target), new_fleets.end());
-      new_fleets.erase(new_fleets.lower_bound(target), new_fleets.end());
-
-      old_fleets = new_fleets;
+    // pairing the position and speed
+    for(int i = 0; i < N; ++i){
+      const std::vector<double> car = {(double)position[i], (double)speed[i]};
+      cars.push_back(car);
     }
 
-    return fleet_count;
+    std::sort(cars.begin(), cars.end());
+
+    // checking number of fleets
+    for(int i = N - 1; i >= 1; --i){
+      const auto car_pos_1 = cars[i][0];
+      const auto car_spd_1 = cars[i][1];
+
+      const auto car_pos_2 = cars[i-1][0];
+      const auto car_spd_2 = cars[i-1][1];
+
+      const auto steps_1 = (target - car_pos_1)/car_spd_1;
+      const auto steps_2 = (target - car_pos_2)/car_spd_2;
+
+      if(steps_2 > steps_1) num_fleets += 1;
+      else cars[i-1] = cars[i];
+    }
+
+    return num_fleets;
   }
 };
 
 int main(){
-  int target = 12;
-  std::vector<int> position = {10, 8, 0, 5, 3};
-  std::vector<int> speed = {2, 4, 1, 1, 3};
+  int target = 10;
+  std::vector<int> position = {0,4,2};
+  std::vector<int> speed = {2,1,3};
 
   auto result = Solution().carFleet(target, position, speed);
   std::cout << result << std::endl;
