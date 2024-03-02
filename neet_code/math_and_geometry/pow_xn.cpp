@@ -17,24 +17,26 @@ public:
   double myPow(double x, int n){
     if(n == 0) return 1.0;
 
-    double ans = 1.0;
     auto num_it = std::abs(n);
+    double multiplier = 1.0;
 
-    while(num_it > 0){
-      ans *= x;
+    while(num_it > 1){
+      const double num = x;
+      if(num_it%2 != 0) multiplier *= num;
+      x *= x;
       num_it /= 2;
     }
 
-    if(n%2 != 0) ans *= x;
-    if(n < 0) ans = 1.0/ans;
+    x *= multiplier;
+    if(n < 0) x = 1.0/x;
 
-    return ans;
+    return x;
   }
 };
 
 int main(){
-  double x = 2.0;
-  int n = 10;
+  double x = 2.10000;
+  int n = 3;
   const auto result = Solution2().myPow(x, n);
   std::cout << result << std::endl;
 
