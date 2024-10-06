@@ -1,36 +1,24 @@
-#include<iostream>
 #include<climits>
+#include<iostream>
+#include<vector>
 
 class MinStack {
 public:
-    int* idx, min;
-    MinStack() {
-    }
+  std::vector<int> min;
+  std::vector<int> idx;
 
-    void push(int val) {
-    }
+  MinStack() { min.push_back(INT_MAX); }
 
-    void pop() {
-    }
+  void push(int val) {
+    min.push_back(std::min(min.back(), val));
+    idx.push_back(val);
+  }
 
-    int top() {
-    }
+  void pop() {
+    min.pop_back();
+    idx.pop_back();
+  }
 
-    int getMin() {
-    }
+  int top()    { return idx.back(); }
+  int getMin() { return min.back(); }
 };
-
-int main(){
-  MinStack minstack;
-  minstack.push(2);
-  minstack.push(0);
-  minstack.push(3);
-  minstack.push(0);
-  std::cout << minstack.getMin() << std::endl;
-  minstack.pop();
-  std::cout << minstack.getMin() << std::endl;
-  minstack.pop();
-  std::cout << minstack.getMin() << std::endl;
-  minstack.pop();
-  std::cout << minstack.getMin() << std::endl;
-}
