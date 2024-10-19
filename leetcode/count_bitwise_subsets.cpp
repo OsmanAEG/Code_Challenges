@@ -22,7 +22,6 @@ public:
   int countMaxOrSubsets(std::vector<int>& nums) {
     const auto result = count_bitwise(nums);
     int subsets = 0;
-
     get_max_subsets(subsets, nums, 0, 0, result);
     return subsets;
   }
