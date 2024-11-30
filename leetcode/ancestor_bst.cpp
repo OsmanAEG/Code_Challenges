@@ -6,7 +6,6 @@ struct TreeNode {
   TreeNode(int x) : val(x), left(nullptr), right(nullptr) {}
 };
 
-
 class Solution {
 public:
   void dfs(TreeNode* root, int& min_val, int& max_val, TreeNode*& ancestor) {
